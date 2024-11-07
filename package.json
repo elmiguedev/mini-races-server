@@ -4,16 +4,22 @@
   "type": "module",
   "scripts": {
     "start": "bun run src/index.ts",
-    "dev": "bun run src/index.ts --watch"
+    "dev": "bun --watch run src/index.ts",
+    "prisma:pull": "prisma db pull",
+    "prisma:generate": "prisma generate"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@elysiajs/swagger": "^1.1.5",
+    "@types/bun": "^1.1.13"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.1.1",
     "@prisma/client": "^5.22.0",
+    "elysia": "^1.1.24",
+    "planck": "^1.0.6",
     "prisma": "^5.22.0"
   }
 }
