@@ -1,12 +1,13 @@
 import { Elysia } from "elysia";
 import { swagger } from '@elysiajs/swagger'
+import cors from "@elysiajs/cors";
 import ServiceProvider from "./delivery/providers/ServiceProvider";
 import ActionProvider from "./delivery/providers/ActionProvider";
-import cors from "@elysiajs/cors";
 import UserController from "./delivery/controllers/UserController";
 import RaceController from "./delivery/controllers/RaceController";
 import PingController from "./delivery/controllers/PingController";
 import RaceGameController from "./delivery/controllers/RaceGameController";
+import AuthController from "./delivery/controllers/AuthController";
 
 // 1. init services
 const services = ServiceProvider();
@@ -19,6 +20,7 @@ const port = 3000;
 const app = new Elysia()
   .use(cors())
   .use(swagger())
+  .use(AuthController(actions))
   .use(UserController(actions))
   .use(RaceController(actions))
   .use(PingController(actions))
