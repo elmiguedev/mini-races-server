@@ -1,5 +1,6 @@
 import Elysia, { type Context } from "elysia";
 import type { Actions } from "../providers/ActionProvider";
+import Authorization from "../middlewares/Authorization";
 
 const RaceController = (actions: Actions) => {
 
@@ -9,6 +10,7 @@ const RaceController = (actions: Actions) => {
   }
 
   return new Elysia()
+    .use(Authorization)
     .get("/races", getRacesHandler)
 
 }

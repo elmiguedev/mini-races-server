@@ -1,5 +1,6 @@
 import Elysia, { type Context } from "elysia";
 import type { Actions } from "../providers/ActionProvider";
+import Authorization from "../middlewares/Authorization";
 
 const UserController = (actions: Actions) => {
 
@@ -15,6 +16,7 @@ const UserController = (actions: Actions) => {
   }
 
   return new Elysia()
+    .use(Authorization)
     .get("/users", getUsersHandler)
     .get("/users/:id", getUserByIdHandler)
 

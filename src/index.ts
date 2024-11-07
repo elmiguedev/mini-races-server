@@ -8,6 +8,7 @@ import RaceController from "./delivery/controllers/RaceController";
 import PingController from "./delivery/controllers/PingController";
 import RaceGameController from "./delivery/controllers/RaceGameController";
 import AuthController from "./delivery/controllers/AuthController";
+import Authorization from "./delivery/middlewares/Authorization";
 
 // 1. init services
 const services = ServiceProvider();
