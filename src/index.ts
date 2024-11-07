@@ -3,6 +3,9 @@ import { swagger } from '@elysiajs/swagger'
 import ServiceProvider from "./delivery/providers/ServiceProvider";
 import ActionProvider from "./delivery/providers/ActionProvider";
 import cors from "@elysiajs/cors";
+import UserController from "./delivery/controllers/UserController";
+import RaceController from "./delivery/controllers/RaceController";
+import PingController from "./delivery/controllers/PingController";
 
 // 1. init services
 const services = ServiceProvider();
@@ -15,19 +18,9 @@ const port = 3000;
 const app = new Elysia()
   .use(cors())
   .use(swagger())
-  .get("/ping", () => "pong")
-  .get("/users", async () => {
-    const users = await actions.getUsersAction.execute();
-    return users;
-  })
-  .get("/users/:id", async ({ params }) => {
-    const id = params.id;
-    return id;
-  })
-  .get("/races", async () => {
-    const races = await actions.getRacesAction.execute();
-    return races;
-  })
+  .use(UserController(actions))
+  .use(RaceController(actions))
+  .use(PingController(actions))
 
   .ws("/cws/:id", {
 
