@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Car {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  userId    Int
+  color     String    @default(dbgenerated("0")) @db.VarChar(255)
+  User      User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Car_relation_1")
+  CarSlot   CarSlot[]
+}
+
+model CarPart {
+  id                  Int          @id @default(autoincrement())
+  createdAt           DateTime     @default(now()) @db.Timestamp(6)
+  userId              Int
+  carPartModelId      Int
+  accelerationUpgrade Int
+  velocityUpgrade     Int
+  steeringUpgrade     Int
+  resistanceUpgrade   Int
+  User                User         @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "CarPart_relation_1")
+  CarPartModel        CarPartModel @relation(fields: [carPartModelId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "CarPart_relation_2")
+  CarSlot             CarSlot[]
+}
+
+model CarPartModel {
+  id           Int       @id(map: "PK_45b11b7865e8cbdb3d255a92529") @default(autoincrement())
+  name         String    @db.VarChar
+  type         String    @db.VarChar
+  acceleration Int
+  velocity     Int
+  steering     Int
+  resistance   Int
+  price        Int?      @default(0)
+  createdAt    DateTime? @default(now()) @db.Timestamp(6)
+  CarPart      CarPart[]
+}
+
+model CarSlot {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  carId     Int
+  carPartId Int
+  type      String   @db.VarChar(255)
+  Car       Car      @relation(fields: [carId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "CarSlot_relation_1")
+  CarPart   CarPart  @relation(fields: [carPartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "CarSlot_relation_2")
+}
+
+model User {
+  id        Int       @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
+  name      String    @db.VarChar
+  email     String    @db.VarChar
+  password  String    @db.VarChar
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
+  money     Int?      @default(0)
+  Car       Car[]
+  CarPart   CarPart[]
+}
