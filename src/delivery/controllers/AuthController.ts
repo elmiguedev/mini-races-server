@@ -20,11 +20,18 @@ const AuthController = (actions: Actions) => {
       return error(401, "Invalid username or password");
     }
 
-    const token = await ctx.jwt.sign({
-      id: user?.id
-    });
+    const userSession: any = {
+      id: user?.id,
+      name: user?.name,
+      email: user?.email
+    };
 
-    return token;
+    const token = await ctx.jwt.sign(userSession);
+
+    return {
+      token,
+      user: userSession
+    };
   }
 
   const registerHandler = async (ctx: Context & { jwt: any }) => {
