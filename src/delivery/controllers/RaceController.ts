@@ -5,8 +5,8 @@ import Authorization from "../middlewares/Authorization";
 const RaceController = (actions: Actions) => {
 
   const getRacesHandler = async (ctx: Context) => {
-    const users = await actions.getRacesAction.execute();
-    return users;
+    const races = await actions.getRacesAction.execute();
+    return races;
   }
 
   return new Elysia()
