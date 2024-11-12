@@ -3,8 +3,6 @@ import type { Actions } from "../providers/ActionProvider";
 import type { Server, ServerWebSocket } from "bun";
 import type { TypeCheck } from "elysia/type-system";
 import type { ElysiaWS } from "elysia/ws";
-import jwt from "@elysiajs/jwt";
-import Authorization from "../middlewares/Authorization";
 
 type ElysiaWsType = ElysiaWS<ServerWebSocket<{ validator?: TypeCheck<TSchema>; }>, MergeSchema<UnwrapRoute<InputSchema<never>, {}>, {}> & { params: Record<"id", string>; }, { decorator: {}; store: {}; derive: {}; resolve: {}; } & { derive: {}; resolve: {}; }>;
 
@@ -24,15 +22,26 @@ const RaceGameController
 
     }
 
-    const messageHandler = (ws: ElysiaWsType, room: string, data: any) => {
+    const messageHandler = async (ws: ElysiaWsType, room: string, data: any) => {
       if (!data.key || !data.data) {
         return;
       }
 
       switch (data.key) {
-        case "chat":
-          ws.publish(room, data);
-          ws.send(data);
+        case "player_chat":
+          const chatMessage = await actions.sendChatMessageAction.execute({
+            message: data.data.message,
+            raceId: room,
+            socketId: ws.id
+          });
+
+          const socketMessage = {
+            key: "player_chat",
+            data: chatMessage
+          };
+
+          ws.publish(room, socketMessage);
+          ws.send(socketMessage);
           break;
         default:
           console.log("## key not found:", data.key);
@@ -74,29 +83,39 @@ const RaceGameController
               id: ws.id,
               user: tokenPayload
             }
+
           }
 
-          const roomId = ws.data.params.id;
-          const roomName = "room-" + roomId;
+          const raceData = await actions.joinRaceAction.execute({
+            raceId: ws.data.params.id,
+            userId: tokenPayload.id,
+            socketId: ws.id
+          })
 
-          ws.subscribe(roomName);
-          ws.publish(roomName, "usuario conectado");
+          const roomId = ws.data.params.id;
+
+          ws.subscribe(roomId);
+          ws.publish(roomId, {
+            key: "player_joined",
+            data: raceData
+          });
         },
 
-        close(ws) {
+        async close(ws) {
           console.log("## socket desconectado - sala:", ws.data.params.id);
           const roomId = ws.data.params.id;
-          const roomName = "room-" + roomId;
-          ws.unsubscribe(roomName);
-          server?.publish(roomName, "usuario desconectado");
+          ws.unsubscribe(roomId);
+          server?.publish(roomId, "usuario desconectado");
+          await actions.leaveRaceAction.execute({
+            userId: sockets[ws.id].user.id
+          })
           delete sockets[ws.id];
         },
 
         message(ws, data: any) {
           const roomId = ws.data.params.id;
-          const roomName = "room-" + roomId;
           console.log(`(${sockets[ws.id].user.name}) ## ${data.key}: ${data.data} (socket id: ${ws.id})`);
-          messageHandler(ws, roomName, data);
+          messageHandler(ws, roomId, data);
         }
       });
 

@@ -16,6 +16,7 @@ export class JoinRaceAction implements Action<JoinRaceActionParams, RaceData> {
   ) { }
 
   public async execute(params: JoinRaceActionParams): Promise<RaceData> {
+
     const race = await this.raceRepository.getById(params.raceId);
     const user = await this.userRepository.findById(params.userId);
     if (!race) {
