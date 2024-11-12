@@ -16,7 +16,8 @@ const Authorization = (app: Elysia) =>
     if (!tokenPayload) {
       return error(401, "Unauthorized");
     }
-
+    // @ts-ignore
+    app.ws.user = tokenPayload;
     return token;
   });
 
