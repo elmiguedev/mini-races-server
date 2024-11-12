@@ -43,6 +43,19 @@ const RaceGameController
           ws.publish(room, socketMessage);
           ws.send(socketMessage);
           break;
+        case "player_ready": {
+          const raceStatus = await actions.playerReadyAction.execute({
+            userId: sockets[ws.id].user.id
+          });
+          const socketMessage = {
+            key: "race_status",
+            data: raceStatus
+          }
+          ws.publish(room, socketMessage);
+          ws.send(socketMessage);
+          break;
+        }
+
         default:
           console.log("## key not found:", data.key);
           break;
@@ -96,20 +109,27 @@ const RaceGameController
 
           ws.subscribe(roomId);
           ws.publish(roomId, {
-            key: "player_joined",
+            key: "race_status",
             data: raceData
           });
+          ws.send({
+            key: "race_status",
+            data: raceData
+          })
         },
 
         async close(ws) {
           console.log("## socket desconectado - sala:", ws.data.params.id);
           const roomId = ws.data.params.id;
           ws.unsubscribe(roomId);
-          server?.publish(roomId, "usuario desconectado");
-          await actions.leaveRaceAction.execute({
+          const raceData = await actions.leaveRaceAction.execute({
             userId: sockets[ws.id].user.id
           })
           delete sockets[ws.id];
+          ws.publish(roomId, {
+            key: "race_status",
+            data: raceData
+          });
         },
 
         message(ws, data: any) {
