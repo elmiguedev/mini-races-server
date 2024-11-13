@@ -7,6 +7,8 @@ import type { RaceData } from "../domain/race/RaceData";
 import type { User } from "../domain/user/User";
 import type { PlayerData } from "../domain/race/PlayerData";
 
+const RACE_ITERATION_TIME = 1000 / 60;
+
 export class RaceEntity {
   private id: string;
   private maxPlayers: number;
@@ -15,6 +17,9 @@ export class RaceEntity {
   private chats: ChatMessage[];
   private world: World;
   private players: Record<string, ServerPlayerEntity>;
+  private statusListener: Array<any>;
+  private raceTimer: any;
+
 
   constructor() {
     this.id = this.generateId();
@@ -24,6 +29,7 @@ export class RaceEntity {
     this.status = "lobby";
     this.world = new World();
     this.chats = [];
+    this.statusListener = [];
   }
 
   public getId() {
@@ -92,7 +98,8 @@ export class RaceEntity {
   public checkPlayersInRace() {
     const playersReady = Object.values(this.players).every((player) => player.getStatus() === "inRace");
     if (playersReady) {
-      this.status = "countdown";
+      this.status = "running"; // TODO: add countdown
+      // this.status = "countdown";
     }
   }
 
@@ -101,7 +108,7 @@ export class RaceEntity {
   }
 
   public iterate() {
-    this.world.step(1 / 60);
+    this.world.step(1 / 30);
   }
 
   private generateId(): string {
@@ -114,6 +121,26 @@ export class RaceEntity {
       playersData[key] = this.players[key].getData();
     });
     return playersData;
+  }
+
+  public startRace() {
+
+    this.raceTimer = setInterval(() => {
+      // this.iterate();
+      this.notifyStatusChange();
+    }, RACE_ITERATION_TIME);
+  }
+
+  public stopRace() {
+    clearInterval(this.raceTimer);
+  }
+
+  public addStatusListener(callback: any) {
+    this.statusListener.push(callback);
+  }
+
+  public notifyStatusChange() {
+    this.statusListener.forEach((callback) => callback(this.getData()));
   }
 
 }

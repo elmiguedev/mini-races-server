@@ -26,6 +26,7 @@ export class InMemoryRaceRepository implements RaceRepository {
 
   public deleteRace(id: string): Promise<RaceEntity> {
     const race = this.races[id];
+    race.stopRace();
     delete this.races[id];
     return Promise.resolve(race);
   }

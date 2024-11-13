@@ -55,6 +55,62 @@ const RaceGameController
           ws.send(socketMessage);
           break;
         }
+        case "player_in_race": {
+          const raceStatus = await actions.playerInRaceAction.execute({
+            userId: sockets[ws.id].user.id
+          });
+          const socketMessage = {
+            key: "race_status",
+            data: raceStatus
+          }
+          ws.publish(room, socketMessage);
+          ws.send(socketMessage);
+
+          if (raceStatus.status === "running") {
+            await actions.startRaceAction.execute({
+              raceId: room,
+              statusCallback: (raceStatus) => {
+                const socketMessage = {
+                  key: "race_status",
+                  data: raceStatus
+                }
+                ws.publish(room, socketMessage);
+                ws.send(socketMessage);
+              }
+            });
+          }
+
+          // const timer = setInterval(async () => {
+          //   const raceStatus = await actions.raceTickAction.execute({
+          //     raceId: room
+          //   })
+
+          //   const socketMessage = {
+          //     key: "race_status",
+          //     data: raceStatus
+          //   }
+          //   ws.publish(room, socketMessage);
+          //   ws.send(socketMessage);
+          // }, 1000 / 60);
+
+          break;
+        }
+        case "player_move": {
+          console.log("## player_move", data.data);
+          const raceStatus = await actions.playerMoveAction.execute({
+            userId: sockets[ws.id].user.id,
+            accelerate: data.data.accelerate,
+            left: data.data.left,
+            right: data.data.right
+          });
+          // const socketMessage = {
+          //   key: "race_status",
+          //   data: raceStatus
+          // }
+          // ws.publish(room, socketMessage);
+          // ws.send(socketMessage);
+          break;
+        }
 
         default:
           console.log("## key not found:", data.key);
@@ -106,7 +162,7 @@ const RaceGameController
           })
 
           const roomId = ws.data.params.id;
-
+          ws.send({ key: "socket_id", data: ws.id });
           ws.subscribe(roomId);
           ws.publish(roomId, {
             key: "race_status",

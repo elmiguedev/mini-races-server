@@ -14,7 +14,9 @@ import { LeaveRaceAction } from "../../core/actions/race/LeaveRaceAction";
 import { PlayerInRaceAction } from "../../core/actions/race/PlayerInRaceAction";
 import { PlayerMoveAction } from "../../core/actions/race/PlayerMoveAction";
 import { PlayerReadyAction } from "../../core/actions/race/PlayerReadyAction";
+import { RaceTickAction } from "../../core/actions/race/RaceTickAction";
 import { SendChatMessageAction } from "../../core/actions/race/SendChatMessageAction";
+import { StartRaceAction } from "../../core/actions/race/StartRaceAction";
 import { GetUserAction } from "../../core/actions/users/GetUserAction";
 import { GetUsersAction } from "../../core/actions/users/GetUsersAction";
 import { LoginAction } from "../../core/actions/users/LoginAction";
@@ -43,6 +45,8 @@ export interface Actions {
   playerReadyAction: PlayerReadyAction;
   playerInRaceAction: PlayerInRaceAction;
   playerMoveAction: PlayerMoveAction;
+  raceTickAction: RaceTickAction;
+  startRaceAction: StartRaceAction;
 }
 
 const ActionProvider = (services: Services): Actions => {
@@ -67,7 +71,9 @@ const ActionProvider = (services: Services): Actions => {
     sendChatMessageAction: new SendChatMessageAction(services.raceRepository),
     playerInRaceAction: new PlayerInRaceAction(services.raceRepository),
     playerMoveAction: new PlayerMoveAction(services.raceRepository),
-    playerReadyAction: new PlayerReadyAction(services.raceRepository)
+    playerReadyAction: new PlayerReadyAction(services.raceRepository),
+    raceTickAction: new RaceTickAction(services.raceRepository),
+    startRaceAction: new StartRaceAction(services.raceRepository),
   }
 }
 

@@ -91,19 +91,19 @@ export class ServerPlayerEntity {
     // )
     const dx = Math.cos(this.playerRaceInfo.angle);
     const dy = Math.sin(this.playerRaceInfo.angle);
-    this.playerRaceInfo.position.x += 10 * dx;
-    this.playerRaceInfo.position.y += 10 * dy;
+    this.playerRaceInfo.position.x += 5 * dx;
+    this.playerRaceInfo.position.y += 5 * dy;
   }
 
   public turnLeft() {
     // const currentAngle = this.body.getAngle();
     // this.body.setAngle(currentAngle - 0.05);
-    this.playerRaceInfo.angle += 0.05;
+    this.playerRaceInfo.angle -= 0.05;
   }
 
   public turnRight() {
     // const currentAngle = this.body.getAngle();
     // this.body.setAngle(currentAngle + 0.05);
-    this.playerRaceInfo.angle -= 0.05;
+    this.playerRaceInfo.angle += 0.05;
   }
 }
