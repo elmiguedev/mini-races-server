@@ -65,6 +65,18 @@ const RaceGameController
           }
           ws.publish(room, socketMessage);
           ws.send(socketMessage);
+          break;
+        }
+        case "player_running": {
+          const raceStatus = await actions.playerRunningAction.execute({
+            userId: sockets[ws.id].user.id
+          });
+          const socketMessage = {
+            key: "race_status",
+            data: raceStatus
+          }
+          ws.publish(room, socketMessage);
+          ws.send(socketMessage);
 
           if (raceStatus.status === "running") {
             await actions.startRaceAction.execute({

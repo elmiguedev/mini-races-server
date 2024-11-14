@@ -102,8 +102,14 @@ export class RaceEntity {
   public checkPlayersInRace() {
     const playersReady = Object.values(this.players).every((player) => player.getStatus() === "inRace");
     if (playersReady) {
-      this.status = "running"; // TODO: add countdown
-      // this.status = "countdown";
+      this.status = "countdown";
+    }
+  }
+
+  public checkPlayersRunning() {
+    const playersReady = Object.values(this.players).every((player) => player.getStatus() === "running");
+    if (playersReady) {
+      this.status = "running";
     }
   }
 
