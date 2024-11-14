@@ -34,13 +34,13 @@ export class ServerPlayerEntity {
     });
     this.playerRaceInfo = {
       acceleration: 0,
-      angle: 0,
+      angle: -(Math.PI / 2),
       bestLapTime: 0,
       currentCheckpoint: 0,
       currentCheckpointTime: 0,
       currentLap: 0,
       currentLapTime: 0,
-      position: { x: 0, y: 0 },
+      position: { x: 200, y: 300 },
       racePosition: 0,
       velocity: 0,
     };
