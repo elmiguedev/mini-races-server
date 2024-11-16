@@ -1,4 +1,4 @@
-import Elysia, { type Context, type InferContext, type InputSchema, type MergeSchema, type TSchema, type UnwrapRoute } from "elysia";
+import Elysia, { type Context } from "elysia";
 import type { Actions } from "../providers/ActionProvider";
 import type { Server } from "bun";
 import { CloseConnectionHandler } from "./handlers/racegame/CloseConnectionHandler";
