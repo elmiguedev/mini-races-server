@@ -76,7 +76,7 @@ const ActionProvider = (services: Services): Actions => {
     playerReadyAction: new PlayerReadyAction(services.raceRepository),
     raceTickAction: new RaceTickAction(services.raceRepository),
     startRaceAction: new StartRaceAction(services.raceRepository),
-    playerRunningAction: new PlayerRunningAction(services.raceRepository)
+    playerRunningAction: new PlayerRunningAction(services.raceRepository),
   }
 }
 
