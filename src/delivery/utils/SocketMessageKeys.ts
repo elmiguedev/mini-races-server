@@ -5,4 +5,5 @@ export const SocketMessageKeys = {
   PLAYER_RUNNING: "player_running",
   PLAYER_MOVE: "player_move",
   RACE_STATUS: "race_status",
+  ERROR: "error"
 }
