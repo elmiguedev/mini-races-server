@@ -8,7 +8,6 @@ export const PlayerMoveHandler = async (params: SocketHandlerParams) => {
     return;
   }
 
-  console.log("## player_move", message.data);
   await actions.playerMoveAction.execute({
     userId: sockets[ws.id].user.id,
     accelerate: message.data.accelerate,
