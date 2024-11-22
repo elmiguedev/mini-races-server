@@ -1,15 +1,9 @@
 # mini-races-server
 
-To install dependencies:
+Cosas para probar si mejora el server
 
-```bash
-bun install
-```
+- el calculo de las posiciones lo puede hacer el client, pero el calculo de los checkpoints el server (checkpoint y tiempo)
 
-To run:
+- calcular el ping
 
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.1.34. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+- reducir el time del iterador
