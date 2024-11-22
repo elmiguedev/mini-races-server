@@ -138,7 +138,7 @@ export class RaceEntity {
     this.raceTimer = setInterval(() => {
       Object.values(this.players).forEach((player, index) => {
         this.validateCheckpointOverlap(player);
-        // this.validatePositions();
+        // this.validatePositions()
       });
 
       this.notifyStatusChange();
