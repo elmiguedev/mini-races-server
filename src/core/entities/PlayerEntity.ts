@@ -48,15 +48,12 @@ export class ServerPlayerEntity {
     this.user = props.user;
     this.car = {
       color: "red",
-      id: this.user.id!, // TODO: map car
+      id: this.user.id!,
       userId: this.user.id!,
     }
   }
 
   public getData(): PlayerData {
-    // this.playerRaceInfo.angle = this.body.getAngle() * 180 / Math.PI;
-    // this.playerRaceInfo.position.x = this.body.getPosition().x;
-    // this.playerRaceInfo.position.y = this.body.getPosition().y;
     return {
       name: this.user.name,
       socketId: this.socketId,
@@ -82,28 +79,26 @@ export class ServerPlayerEntity {
   }
 
   public accelerate() {
-    // const cosx = Math.cos(this.body.getAngle());
-    // const sinx = Math.sin(this.body.getAngle());
-    // const acc = 26;
-    // this.body.applyLinearImpulse(
-    //   Vec2(cosx * acc, sinx * acc),
-    //   this.body.getWorldCenter(),
-    // )
-    const dx = Math.cos(this.playerRaceInfo.angle);
-    const dy = Math.sin(this.playerRaceInfo.angle);
+
+    const radians = this.playerRaceInfo.angle;
+
+    const dx = Math.cos(radians);
+    const dy = Math.sin(radians);
     this.playerRaceInfo.position.x += 5 * dx;
     this.playerRaceInfo.position.y += 5 * dy;
   }
 
   public turnLeft() {
-    // const currentAngle = this.body.getAngle();
-    // this.body.setAngle(currentAngle - 0.05);
     this.playerRaceInfo.angle -= 0.05;
+    if (this.playerRaceInfo.angle < -Math.PI) {
+      this.playerRaceInfo.angle = Math.PI;
+    }
   }
 
   public turnRight() {
-    // const currentAngle = this.body.getAngle();
-    // this.body.setAngle(currentAngle + 0.05);
     this.playerRaceInfo.angle += 0.05;
+    if (this.playerRaceInfo.angle > Math.PI) {
+      this.playerRaceInfo.angle = -Math.PI;
+    }
   }
 }
