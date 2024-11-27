@@ -8,7 +8,7 @@ import type { User } from "../domain/user/User";
 import type { PlayerData } from "../domain/race/PlayerData";
 import type { Checkpoint } from "../domain/race/Checkpoint";
 
-const RACE_ITERATION_TIME = 1000 / 30;
+const RACE_ITERATION_TIME = 1000 / 60;
 
 export class RaceEntity {
   private id: string;
@@ -137,6 +137,9 @@ export class RaceEntity {
 
     this.raceTimer = setInterval(() => {
       Object.values(this.players).forEach((player, index) => {
+        // ESTO ES LO QUE PARAMI NO ESTA BIEN
+        player.move(); // PARA MI LO QUE HAY QUE HACER ES MOVERLO DENTRO DE TODO TODO
+
         this.validateCheckpointOverlap(player);
         // this.validatePositions()
       });

@@ -27,17 +27,20 @@ export class PlayerMoveAction implements Action<PlayerMoveActionParams, PlayerDa
       throw new Error("Player not found");
     }
 
-    if (params.accelerate) {
-      player.accelerate();
-    }
 
-    if (params.left) {
-      player.turnLeft();
-    }
+    player.addMove(params);
+    // if (params.left) {
+    //   player.turnLeft();
+    // }
 
-    if (params.right) {
-      player.turnRight();
-    }
+    // if (params.right) {
+    //   player.turnRight();
+    // }
+
+    // if (params.accelerate) {
+    //   player.accelerate();
+    // }
+
 
     return player.getData();
   }

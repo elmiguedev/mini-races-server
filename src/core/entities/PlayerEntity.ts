@@ -19,6 +19,8 @@ export class ServerPlayerEntity {
   private playerRaceInfo: PlayerRaceInfo;
   private world: World;
   private body: Body;
+  private moveBuffer: any[] = [];
+
 
   constructor(props: PlayerEntityProps) {
     this.socketId = props.socketId;
@@ -79,9 +81,7 @@ export class ServerPlayerEntity {
   }
 
   public accelerate() {
-
     const radians = this.playerRaceInfo.angle;
-
     const dx = Math.cos(radians);
     const dy = Math.sin(radians);
     this.playerRaceInfo.position.x += 5 * dx;
@@ -90,15 +90,28 @@ export class ServerPlayerEntity {
 
   public turnLeft() {
     this.playerRaceInfo.angle -= 0.05;
-    if (this.playerRaceInfo.angle < -Math.PI) {
-      this.playerRaceInfo.angle = Math.PI;
-    }
+    // if (this.playerRaceInfo.angle < -Math.PI) {
+    //   this.playerRaceInfo.angle = Math.PI;
+    // }
   }
 
   public turnRight() {
     this.playerRaceInfo.angle += 0.05;
-    if (this.playerRaceInfo.angle > Math.PI) {
-      this.playerRaceInfo.angle = -Math.PI;
+    // if (this.playerRaceInfo.angle > Math.PI) {
+    //   this.playerRaceInfo.angle = -Math.PI;
+    // }
+  }
+
+  public addMove(move: any) {
+    this.moveBuffer.push(move);
+  }
+
+  public move() {
+    const move = this.moveBuffer.shift();
+    if (move) {
+      if (move.left) this.turnLeft();
+      if (move.right) this.turnRight();
+      if (move.accelerate) this.accelerate();
     }
   }
 }
