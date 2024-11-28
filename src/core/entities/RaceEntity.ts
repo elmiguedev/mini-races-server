@@ -138,7 +138,7 @@ export class RaceEntity {
     this.raceTimer = setInterval(() => {
       Object.values(this.players).forEach((player, index) => {
         // ESTO ES LO QUE PARAMI NO ESTA BIEN
-        player.move(); // PARA MI LO QUE HAY QUE HACER ES MOVERLO DENTRO DE TODO TODO
+        player.moveAll(); // PARA MI LO QUE HAY QUE HACER ES MOVERLO DENTRO DE TODO TODO
 
         this.validateCheckpointOverlap(player);
         // this.validatePositions()

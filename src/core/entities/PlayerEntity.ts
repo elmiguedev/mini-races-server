@@ -114,4 +114,10 @@ export class ServerPlayerEntity {
       if (move.accelerate) this.accelerate();
     }
   }
+
+  public moveAll() {
+    while (this.moveBuffer.length > 0) {
+      this.move();
+    }
+  }
 }
