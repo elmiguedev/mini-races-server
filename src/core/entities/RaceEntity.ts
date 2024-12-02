@@ -138,8 +138,8 @@ export class RaceEntity {
     this.raceTimer = setInterval(() => {
       Object.values(this.players).forEach((player, index) => {
 
-        // player.moveAll();
-        player.move();
+        player.moveAll();
+        // player.move();
 
         this.validateCheckpointOverlap(player);
         // this.validatePositions()
