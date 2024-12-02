@@ -104,6 +104,7 @@ export class ServerPlayerEntity {
 
   public addMove(move: any) {
     this.moveBuffer.push(move);
+    // just a comment
   }
 
   public move() {
