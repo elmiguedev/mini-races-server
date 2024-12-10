@@ -40,7 +40,9 @@ const RaceGameController
             context,
             sockets,
             room: ws.data.params.id,
+            server
           });
+
         },
 
         async message(ws, data: any) {
