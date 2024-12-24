@@ -5,6 +5,9 @@ import type { PlayerStatus } from "../domain/race/PlayerStatus";
 import type { PlayerRaceInfo } from "../domain/race/PlayerRaceInfo";
 import type { PlayerData } from "../domain/race/PlayerData";
 
+const VELOCITY = 10;
+const ANGLE_VELOCITY = 0.07;
+
 export interface PlayerEntityProps {
   socketId: string;
   user: User;
@@ -84,19 +87,19 @@ export class ServerPlayerEntity {
     const radians = this.playerRaceInfo.angle;
     const dx = Math.cos(radians);
     const dy = Math.sin(radians);
-    this.playerRaceInfo.position.x += 5 * dx;
-    this.playerRaceInfo.position.y += 5 * dy;
+    this.playerRaceInfo.position.x += VELOCITY * dx;
+    this.playerRaceInfo.position.y += VELOCITY * dy;
   }
 
   public turnLeft() {
-    this.playerRaceInfo.angle -= 0.05;
+    this.playerRaceInfo.angle -= ANGLE_VELOCITY;
     // if (this.playerRaceInfo.angle < -Math.PI) {
     //   this.playerRaceInfo.angle = Math.PI;
     // }
   }
 
   public turnRight() {
-    this.playerRaceInfo.angle += 0.05;
+    this.playerRaceInfo.angle += ANGLE_VELOCITY;
     // if (this.playerRaceInfo.angle > Math.PI) {
     //   this.playerRaceInfo.angle = -Math.PI;
     // }
